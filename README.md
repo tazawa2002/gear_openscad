@@ -1,4 +1,7 @@
 # 球状歯車を作成するOpenSCADライブラリ
+
+![球状歯車](img/gear.jpeg)
+
 - inv_gear(m,z,alpha)：インボリュート歯車を作成するモジュール
     - z：歯数
     - m モジュール
