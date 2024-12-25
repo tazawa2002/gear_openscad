@@ -10,3 +10,6 @@
 - sph_gear(m,z,alpha)：基本球状歯車(Basic spherical gear)を作成するモジュール
 - CS_gear(m,z,alpha)：直交球状歯車(Cross spherical gear)を作成するモジュール
 - mpl_gear(m,z,alpha)：鞍状歯車(Monopole gear)を作成するモジュール
+
+## 参考
+[ABENICS: Active Ball Joint Mechanism With Three-DoF Based on Spherical Gear Meshings](https://ieeexplore.ieee.org/document/9415699)
