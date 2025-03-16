@@ -36,7 +36,7 @@ module inv_gear(m,z,alpha){
     module cog(){
         step = (r_k-r_b)/10;
         points = [[0,0],for(i=[r_b:step:r_k]) [x(i),y(i)], [x(r_k),y(r_k)], for(i=[r_k:-step:r_b]) rotation(x(i),-y(i),theta_b), rotation(x(r_b),-y(r_b),theta_b)];
-        polygon(points);
+        render() polygon(points);
     }
     
     rotate([0,0,phi/2]) union(){
@@ -60,7 +60,7 @@ module sph_gear(m,z,alpha){
     
     rotate([0,90,0]) rotate_extrude(){
         difference(){
-            inv_gear(m,z,alpha);
+            render() inv_gear(m,z,alpha);
             translate([-r_k,-r_k,0]) square([r_k,d_k]);
         }
     }
@@ -84,6 +84,11 @@ module CS_gear(m,z,alpha){
     }
 }
 
+// キャッシュされた球状歯車(Cached spherical gear)
+module cached_sph_gear(m,z,alpha){
+    render() sph_gear(m,z,alpha);
+}
+
 // 鞍状歯車(Monopole gear)
 module mpl_gear(m,z,alpha){
     d_p = z*m; // 基準円の直径
@@ -95,14 +100,22 @@ module mpl_gear(m,z,alpha){
     r_k = d_k / 2;
     r_f = d_f / 2;
     r_b = d_b / 2;
+
+    // 鞍状歯車の設定
+    mpl_d_p = d_p / 2;
+    mpl_d_k = d_p + 2*m;
+    mpl_r_k = mpl_d_k / 2;
     
     step = 360/z;
     
     difference(){
-        translate([0,0,-r_p/2]) linear_extrude(r_p) circle((3-sqrt(3))*r_k/2);
+        rotate_extrude() difference(){
+            translate([0,-r_p/2,0]) square([2*r_p,r_p]);
+            translate([3*r_p/2,0,0]) circle(r_p-m);
+        }
         for(i=[0:step:360]){
             translate([3*r_p*cos(i)/2,3*r_p*sin(i)/2,0]){
-                rotate([0,0,3*i/2+180]) sph_gear(m,z,alpha);
+                rotate([0,0,3*i/2+180]) cached_sph_gear(m,z,alpha);
             }
         }
     }
